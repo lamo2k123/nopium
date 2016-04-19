@@ -1,6 +1,6 @@
 {
     "name": "nopium",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Custom resolve modules directory",
     "keywords": [
         "node_modules",
