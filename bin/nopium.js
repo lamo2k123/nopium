@@ -1,25 +1,35 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --use_strict
 
-var path    = require('path'),
-    Module  = require('module'),
+const path      = require('path');
+const Module    = require('module');
 
-    pathRun = path.join(process.cwd(), process.argv[2]),
-    filter  = /^npm_package_nopium_[\d]+$/,
-    packKeys= Object.keys(process.env),
-    nopium  = packKeys.filter(function(item) {
-        return filter.test(item);
-    });
-
-nopium = nopium.map(function(item) {
-    return process.env[item];
-});
+const _wrap     = Module.wrap;
+const envTest   = /^npm_package_nopium_[\d]+$/;
+const envKeys   = Object.keys(process.env);
+const envDirs   = envKeys.filter(key => envTest.test(key));
+const pathTest  = /node_modules/g;
+const pathRun   = path.join(process.cwd(), process.argv[2]);
 
 process.argv.splice(1,1);
 
-Module._originWrap = Module.wrap;
-Module.wrap = function(script) {
-    return Module._originWrap("var nopium = require('nopium'); !/nopium/.test(module.id) && nopium(" + JSON.stringify(nopium) + ", module);" + script);
+Module.wrap = content => _wrap(`
+    global.nopium(module);
+    ${content}
+`);
+
+
+global.nopium = module => {
+    if(envDirs.length && module) {
+        let paths = envDirs.map(key => {
+            return module.paths.map(path => {
+                if(pathTest.test(path)) {
+                    return path.replace(pathTest, process.env[key]);
+                }
+            });
+        });
+
+        module.paths = [].concat(...paths, module.paths);
+    }
 };
 
-console.log('NOPIUM RUNNING', pathRun);
 require(pathRun);
