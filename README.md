@@ -1,6 +1,6 @@
 # Nopium
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/lamo2k123/nopium/master/LICENSE.md)
-[![npm](https://img.shields.io/npm/dt/express.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/nopium)
+[![npm](https://img.shields.io/npm/dt/nopium.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/nopium)
 ## Installation
 local
 ```bash
