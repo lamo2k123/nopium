@@ -26,7 +26,7 @@ Add `nopium` key in `package.json` with an array of directories.
   ...
   "nopium": [
     "my_modules",
-    "my_dev_modyles",
+    "my_dev_modules",
     ...
   ]
 }
